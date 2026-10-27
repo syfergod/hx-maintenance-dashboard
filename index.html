@@ -337,7 +337,7 @@
     Official communication is the WhatsApp group text (Grant / Handyman / HX). This page does not send messages.
   </p>
 <script>
-(function(){var W='https://hx-maint.gsr-bbmaf7.workers.dev';
+(function(){var W='https://hx-maint.gsr-bbmaf7.workers.dev',DR='https://dash-responses.gsr-bbmaf7.workers.dev';
 function show(t){document.querySelectorAll('.tabpane').forEach(function(p){p.style.display=p.dataset.tab===t?'':'none'});document.querySelectorAll('.tabbar button').forEach(function(b){b.classList.toggle('on',b.dataset.t===t)});try{localStorage.setItem('hxtab',t)}catch(e){}}
 document.querySelectorAll('.tabbar button').forEach(function(b){b.onclick=function(){show(b.dataset.t)}});show(localStorage.getItem('hxtab')||'future');
 var q=new URLSearchParams(location.search),k=q.get('key')||sessionStorage.getItem('hxk');if(!k)return;
@@ -348,7 +348,7 @@ var g=document.getElementById('gv');g.style.display='block';
 document.querySelectorAll('tr[data-id]').forEach(function(tr){var id=tr.dataset.id,box=tr.querySelector('.gresp'),r=d.responses[id];
 box.innerHTML=(r?'<div class="prev">Your response: '+esc(r.answer)+'</div>':'')+'<textarea placeholder="Grant: respond here"></textarea><button>Send</button>';
 box.querySelector('button').onclick=function(){var v=box.querySelector('textarea').value.trim();if(!v)return;
-fetch(W+'/respond',{method:'POST',headers:{'content-type':'application/json','x-grant-key':k},body:JSON.stringify({id:id,answer:v,text:tr.querySelector('.item').firstChild.textContent.trim()})}).then(function(x){return x.json()}).then(function(j){if(j.ok){box.querySelector('textarea').value='';var pv=box.querySelector('.prev')||box.insertBefore(document.createElement('div'),box.firstChild);pv.className='prev';pv.textContent='Your response: '+j.rec.answer}else alert('Save failed')})}})}).catch(function(){});
+fetch(W+'/respond',{method:'POST',headers:{'content-type':'application/json','x-grant-key':k},body:JSON.stringify({id:id,answer:v,text:tr.querySelector('.item').firstChild.textContent.trim()})}).then(function(x){return x.json()}).then(function(j){if(j.ok){try{fetch(DR+'/respond',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({dashboard:'hx-maintenance',item_id:id,control:'grant-response',value:v,context:tr.querySelector('.item').firstChild.textContent.trim()})}).catch(function(){})}catch(e){}box.querySelector('textarea').value='';var pv=box.querySelector('.prev')||box.insertBefore(document.createElement('div'),box.firstChild);pv.className='prev';pv.textContent='Your response: '+j.rec.answer}else alert('Save failed')})}})}).catch(function(){});
 })();
 </script>
 </body>
